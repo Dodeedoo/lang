@@ -1,5 +1,25 @@
 {
   "commands": {
-
+    "error": {
+      "error": "Une erreur inattendue est apparue! Veuillez vérifier les autorisations !"
+    },
+    "unban": {
+      "unbanned": "{user} a été débanni !",
+      "fail": "Pas une bonne façon de débannir ```!unban Gotcha#3080```",
+      "notbanned": "Cet utilisateur n'est pas banni !"
+    },
+    "ban": {
+      "banned": "**{user}** a été banni pour **{reason}**.",
+      "bannednoreason": "{user} a été banni définitivement sans **aucune raison**.",
+      "fail": "merci de préciser quel utilisateur bannir !"
+    },
+    "kick": {
+      "kicked": "**{user}** a été expulsé pour **{reason}**.",
+      "kickednoreason": "**{user}** a été expulsé sans **aucune raison**.",
+      "fail": "Veuillez spécifier un utilisateur !"
+    },
+    "hello": {
+      "hello": "Bonjour, je m'appelle Guz Bot !"
+    }
   }
 }

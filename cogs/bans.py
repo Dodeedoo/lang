@@ -19,7 +19,7 @@ class Bans(commands.Cog):
                 if reason == None:
                     await user.ban()
                     msg = await Language(ctx.guild.id).getPhrase("ban", "bannednoreason")
-                    await ctx.send(msg)
+                    await ctx.send(str(msg).format(user=user))
                     return
                 await user.ban(reason=reason)
                 msg = await Language(ctx.guild.id).getPhrase("ban", "banned")

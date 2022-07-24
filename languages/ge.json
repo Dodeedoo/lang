@@ -1,0 +1,25 @@
+{
+  "commands": {
+    "error": {
+      "error": "Ein unerwarteter Fehler ist aufgetreten! Bitte Berechtigungen prüfen!"
+    },
+    "unban": {
+      "unbanned": "{user} wurde entbannt!",
+      "fail": "Kein richtiger Weg, um die Sperre aufzuheben ```!unban Gotcha#3080```",
+      "notbanned": "Dieser Benutzer ist nicht gesperrt!"
+    },
+    "ban": {
+      "banned": "**{user}** wurde aus **{reason}** gesperrt.",
+      "bannednoreason": "{user} wurde ohne Grund dauerhaft gesperrt.",
+      "fail": "Bitte klären Sie, welcher Benutzer gesperrt werden soll!"
+    },
+    "kick": {
+      "kicked": "**{user}** wurde gekickt aus **{reason}**.",
+      "kickednoreason": "**{user}** wurde ohne Grund ** gekickt.",
+      "fail": "Bitte geben Sie einen Benutzer an!"
+    },
+    "hello": {
+      "hello": "Hallo, mein Name ist Guz Bot!"
+    }
+  }
+}

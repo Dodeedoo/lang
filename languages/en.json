@@ -12,6 +12,14 @@
       "banned": "**{user}** has been banned for **{reason}**.",
       "bannednoreason": "{user} has been banned permanently for **no reason**.",
       "fail": "please clarify which user to ban!"
+    },
+    "kick": {
+      "kicked": "**{user}** has been kicked for **{reason}**.",
+      "kickednoreason": "**{user}** has been kicked for **no reason**.",
+      "fail": "Please specify a user!"
+    },
+    "hello": {
+      "hello": "Hello, my name is Guz Bot!"
     }
   }
 }

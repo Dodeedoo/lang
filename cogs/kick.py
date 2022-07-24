@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from managers.languagemanager import Language
 
 
 class Kick(commands.Cog):
@@ -12,16 +13,20 @@ class Kick(commands.Cog):
         if user is not None:
             if reason is not None:
                 await user.kick()
-                await ctx.send(f"**{user}** has been kicked for **no reason**.")
+                msg = await Language(ctx.guild.id).getPhrase("kick", "kickednoreason")
+                await ctx.send(str(msg).format(user=user))
             else:
                 await user.kick(reason=reason)
-                await ctx.send(f"**{user}** has been kicked for **{reason}**.")
+                msg = await Language(ctx.guild.id).getPhrase("kick", "kicked")
+                await ctx.send(str(msg).format(user=user, reason=reason))
         else:
-            await ctx.send("Please specify a user!")
+            msg = await Language(ctx.guild.id).getPhrase("kick", "fail")
+            await ctx.send(msg)
 
     @commands.command()
     async def hello(self, ctx):
-        await ctx.send("Hello! my name is Guz Bot.")
+        msg = await Language(ctx.guild.id).getPhrase("hello", "hello")
+        await ctx.send(msg)
 
 
 def setup(bot):
