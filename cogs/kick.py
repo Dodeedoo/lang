@@ -11,7 +11,7 @@ class Kick(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, user: discord.Member, *, reason=None):
         if user is not None:
-            if reason is not None:
+            if reason is None:
                 await user.kick()
                 msg = await Language(ctx.guild.id).getPhrase("kick", "kickednoreason")
                 await ctx.send(str(msg).format(user=user))
