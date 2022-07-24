@@ -1,7 +1,7 @@
 from discord.ext import commands
-from main import languages
 import json
 
+languages = ["english", "french", "german"]
 
 class Lang(commands.Cog):
     def __init__(self, bot):
@@ -9,13 +9,14 @@ class Lang(commands.Cog):
 
     @commands.command()
     async def test(self, ctx):
-        ctx.send("hey")
+        await ctx.send("hey")
 
     @commands.command()
     async def language(self, ctx, language=None):
-        if language in languages:
+        if str(language).lower() in languages:
+            await ctx.send("switched to " + language)
             language = language[:2]
-            json.dump({"language": language}, open("guilds/" + ctx.guild.id + ".json", "w"))
+            json.dump({"language": language}, open("guilds/" + str(ctx.guild.id) + ".json", "w"))
         else:
             await ctx.send("Invalid Language! please use [English, French, German]")
 

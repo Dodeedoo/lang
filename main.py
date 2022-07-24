@@ -9,7 +9,6 @@ intents.members = True
 load_dotenv("config.env")
 
 bot = commands.Bot(command_prefix='!', intents=intents)
-languages = ["englisj", "french", "german"]
 
 # starting the bot
 @bot.event
