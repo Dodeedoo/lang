@@ -1,0 +1,17 @@
+{
+  "commands": {
+    "error": {
+      "error": "An unexpected error occurred! Please check permissions!"
+    },
+    "unban": {
+      "unbanned": "{user} has been unbanned!",
+      "fail": "Not a Proper Way to Unban ```!unban Gotcha#3080```",
+      "notbanned": "This user is not banned!"
+    },
+    "ban": {
+      "banned": "**{user}** has been banned for **{reason}**.",
+      "bannednoreason": "{user} has been banned permanently for **no reason**.",
+      "fail": "please clarify which user to ban!"
+    }
+  }
+}

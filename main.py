@@ -1,16 +1,17 @@
 import discord
 from discord.ext import commands
-intents = discord.Intents.default()
-intents.members = True
 import os
 from dotenv import load_dotenv
-load_dotenv()
+import json
 
-#setting up the prefix
-#using intents for the permission
-bot = commands.Bot(command_prefix='!',intents = intents)
+intents = discord.Intents.default()
+intents.members = True
+load_dotenv("config.env")
 
-#starting the bot 
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+
+# starting the bot
 @bot.event
 async def on_ready():
     print("------------------------------")
@@ -18,9 +19,16 @@ async def on_ready():
     print("------------------------------")
 
 
-#using cogs for the command handeling
-#if any file in cogs folder it will remove .py extension and it will run it.
-#it will load all the files in the cogs
+@bot.event
+async def on_guild_join(guild):
+    path = "guilds/" + str(guild.id) + ".json"
+    try:
+        with open(path, 'w') as outfile:
+            json.dump({'language': 'en'}, outfile)
+    except FileExistsError:
+        print("Guild already registered " + path)
+
+
 initial_extension = []
 
 for filename in os.listdir("./cogs"):
@@ -29,6 +37,5 @@ for filename in os.listdir("./cogs"):
 if __name__ == "__main__":
     for extension in initial_extension:
         bot.load_extension(extension)
-print("this has been execute too")
-#running the bot thrugh the bot token
+
 bot.run(os.getenv("TOKEN"))

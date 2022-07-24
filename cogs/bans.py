@@ -1,46 +1,56 @@
-import discord 
+import traceback
+
+import discord
 from discord.ext import commands
+from managers.languagemanager import Language
 
 class Bans(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
     @commands.command()
     @commands.has_permissions(ban_members=True)
-    async def ban(self,ctx, user: discord.Member, *, reason = None):
-        if not reason:
-            await user.ban()
-            await ctx.send(f"**{user}** has been banned permanently for **no reason**.")
-        elif not user:
-            await ctx.send("please clarify which user to ban!")
-        else:
-            await user.ban(reason=reason)
-            await ctx.send(f"**{user}** has been banned for **{reason}**.")
-    @ban.error
-    async def ban_error(self,ctx,error):
-        if isinstance(error,commands.MissingPermissions):
-            await ctx.send("You dont have Permission to ban the User")
-
+    async def ban(self, ctx, user: discord.Member = None, *, reason=None):
+        try:
+            if user == None:
+                msg = await Language(ctx.guild.id).getPhrase("ban", "fail")
+                await ctx.send(msg)
+            else:
+                if reason == None:
+                    await user.ban()
+                    msg = await Language(ctx.guild.id).getPhrase("ban", "bannednoreason")
+                    await ctx.send(msg)
+                    return
+                await user.ban(reason=reason)
+                msg = await Language(ctx.guild.id).getPhrase("ban", "banned")
+                await ctx.send(str(msg).format(user=user, reason=reason))
+        except:
+            msg = await Language(ctx.guild.id).getPhrase("error", "error")
+            await ctx.send(msg)
+            traceback.print_exc()
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def unban(self,ctx, *, member):
+    async def unban(self, ctx, *, member = None):
+        if member is None:
+            msg = await Language(ctx.guild.id).getPhrase("unban", "fail")
+            await ctx.channel.send(msg)
+            return
         banned_users = await ctx.guild.bans()
         member_name, member_discriminator = member.split('#')
         for ban_entry in banned_users:
             user = ban_entry.user
-        if (user.name, user.discriminator) == (member_name, member_discriminator):
-            await ctx.guild.unban(user)
-            await ctx.channel.send(f"{user.mention} has been unbanned successfully!")
-        else:
-            await ctx.channel.send("Not a Proper Way to Unban ```!unban Gotcha#3080```")
-    @unban.error
-    async def unban_error(self,ctx,error):
-        if isinstance(error,commands.MissingPermissions):
-            await ctx.send("You dont have Permission to Unban the User")
-    
+            if (user.name, user.discriminator) == (member_name, member_discriminator):
+                await ctx.guild.unban(user)
+                msg = await Language(ctx.guild.id).getPhrase("unban", "unbanned")
+                await ctx.channel.send(str(msg).format(user=user.name))
+            else:
+                msg = await Language(ctx.guild.id).getPhrase("unban", "notbanned")
+                await ctx.channel.send(msg)
+
 
     @commands.command()
-    async def ping(self,ctx):
+    async def ping(self, ctx):
         await ctx.send("Pong!")
 
 
