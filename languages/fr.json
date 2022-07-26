@@ -20,6 +20,10 @@
     },
     "hello": {
       "hello": "Bonjour, je m'appelle Guz Bot !"
+    },
+    "language": {
+      "fail": "Langue invalide ! Veuillez utiliser [English, French, German]",
+      "success": "Passé à "
     }
   }
 }
