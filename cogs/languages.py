@@ -1,8 +1,10 @@
 from discord.ext import commands
 from managers.languagemanager import Language
-import json
+from data import database
+from main import db
 
 languages = ["english", "french", "german"]
+
 
 class Lang(commands.Cog):
     def __init__(self, bot):
@@ -18,7 +20,11 @@ class Lang(commands.Cog):
             msg = await Language(ctx.guild.id).getPhrase("language", "success")
             await ctx.send(msg + language)
             language = language[:2]
-            json.dump({"language": language}, open("guilds/" + str(ctx.guild.id) + ".json", "w"))
+            guild = db.session.query(database.Guild).filter(
+                database.Guild.id == int(ctx.guild.id)
+            ).one()
+            guild.language = language
+            db.session.commit()
         else:
             msg = await Language(ctx.guild.id).getPhrase("language", "fail")
             await ctx.send(msg)
