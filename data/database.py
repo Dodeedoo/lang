@@ -13,12 +13,25 @@ class Guild(Base):
 
 
 def create_user_table(name):
-    return type(str(name), (Base, ), {
+    return type(str(name), (Base,), {
         "__tablename__": str(name),
         "__table_args__": {'extend_existing': True},
         "id": Column(Integer, primary_key=True),
         "balance": Column(Integer),
         "inventory": Column(String)
+    })
+
+
+def create_item_table(name):
+    return type(str(str(name) + "inventory"), (Base,), {
+        "__tablename__": str(str(name) + "inventory"),
+        "__table_args__": {'extend_existing': True},
+        "id": Column(String, primary_key=True),
+        "name": Column(String),
+        "min": Column(Integer),
+        "max": Column(Integer),
+        "emoji": Column(String),
+        "price": Column(Integer)
     })
 
 

@@ -38,6 +38,10 @@ class Joinevent(commands.Cog):
         if db.session.query(db.session.query(database.Guild.id).filter(database.Guild.id == guild.id).exists()).scalar() is not True:
             db.session.add(database.Guild(id=guild.id, language=os.getenv("DEFAULT_LANGUAGE")))
             meta = db.meta
+            Table(str(guild.id) + "inventory", meta,
+                  Column('id', String, primary_key=True), Column('name', String),
+                  Column('min', Integer), Column('max', Integer),
+                  Column('emoji', String), Column('price', Integer))
             Table(guild.id, meta, Column('id', Integer, primary_key=True), Column('balance', Integer), Column('inventory', String))
             meta.create_all(db.engine)
             db.session.commit()
