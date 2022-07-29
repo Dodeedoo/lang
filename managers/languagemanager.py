@@ -1,8 +1,7 @@
 import json
 from sqlalchemy import select
 from data import database
-
-db = database.DataBase()
+from data.database import db
 
 
 class Language:

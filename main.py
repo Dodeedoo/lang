@@ -3,8 +3,8 @@ import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-from managers.languagemanager import db
-from data import database
+from data.database import db
+from sqlalchemy import Column, Integer, String, Table
 
 intents = discord.Intents.default()
 intents.members = True
@@ -18,14 +18,12 @@ async def on_ready():
     print("Bot is ready to use!")
     print("------------------------------")
     await db.start_databse()
+    #Table("845734294487171124", db.meta, Column('id', Integer, primary_key=True), Column('balance', Integer), Column('inventory', String))
+    #db.meta.create_all(db.engine)
 
 @bot.event
-async def on_guild_join(guild):
-    if db.session.query(db.session.query(database.Guild.id).filter(database.Guild.id == guild.id).exists()).scalar() is not True:
-        db.session.add(database.Guild(id=guild.id, language=os.getenv("DEFAULT_LANGUAGE")))
-        db.session.commit()
-    else:
-        print("Guild already registered " + str(guild.id))
+async def on_disconnect():
+    print("Bot going offline")
 
 initial_extension = []
 
@@ -36,9 +34,11 @@ if __name__ == "__main__":
     for extension in initial_extension:
         print(extension)
         bot.load_extension(extension)
-
+"""
 bot.load_extension("cogs.bans")
 bot.load_extension("cogs.kick")
 bot.load_extension("cogs.languages")
+bot.load_extension("cogs.joinevent")
+"""
 
 bot.run(os.getenv("TOKEN"))

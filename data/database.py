@@ -5,10 +5,22 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
+
 class Guild(Base):
     __tablename__ = "guilds"
     id = Column(Integer, primary_key=True)
     language = Column(String(2))
+
+
+def create_user_table(name):
+    return type(str(name), (Base, ), {
+        "__tablename__": str(name),
+        "__table_args__": {'extend_existing': True},
+        "id": Column(Integer, primary_key=True),
+        "balance": Column(Integer),
+        "inventory": Column(String)
+    })
+
 
 class DataBase:
 
@@ -16,6 +28,7 @@ class DataBase:
         self.session = None
         self.engine = None
         self.conn = None
+        self.meta = None
 
     async def start_databse(self):
         engine = sqlalchemy.create_engine('sqlite:///guilds.db')
@@ -26,4 +39,8 @@ class DataBase:
         print("databse started")
         self.engine = engine
         self.session = Session(engine)
+        self.meta = meta
         self.conn = conn
+
+
+db = DataBase()

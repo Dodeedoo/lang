@@ -1,7 +1,7 @@
 from discord.ext import commands
 from managers.languagemanager import Language
 from data import database
-from main import db
+from data.database import db
 
 languages = ["english", "french", "german"]
 

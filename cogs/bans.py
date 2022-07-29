@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 from managers.languagemanager import Language
 
+
 class Bans(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -31,7 +32,7 @@ class Bans(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def unban(self, ctx, *, member = None):
+    async def unban(self, ctx, *, member=None):
         if member is None:
             msg = await Language(ctx.guild.id).getPhrase("unban", "fail")
             await ctx.channel.send(msg)
@@ -48,11 +49,9 @@ class Bans(commands.Cog):
                 msg = await Language(ctx.guild.id).getPhrase("unban", "notbanned")
                 await ctx.channel.send(msg)
 
-
     @commands.command()
     async def ping(self, ctx):
         await ctx.send("Pong!")
-
 
 
 def setup(bot):
