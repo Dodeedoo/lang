@@ -1,3 +1,5 @@
+import ast
+import pickle
 import operator
 import traceback
 
@@ -18,14 +20,16 @@ class Wallet:
         "**": operator.pow
     }
 
-    def __init__(self, money, inventory: dict):
+    def __init__(self, money, inventory: dict, gid):
         self.money = money
         self.inventory = inventory
+        self.gid = gid
 
-    def get_money(self, formatted=True):
-        if formatted:
-            return format(self.money, ",")
+    def get_money(self):
         return int(self.money)
+
+    def get_money_F(self):
+        return format(self.money, ",")
 
     def add(self, amount):
         self.money += amount
@@ -43,10 +47,16 @@ class Wallet:
     def set_inventory(self, inventory):
         self.inventory = inventory
 
+    def get_gid(self):
+        return self.gid
+
 
 def mod_inventory(inventory: dict, operation: str, itemid: str, amount: int):
     print(inventory)
-    item = inventory[itemid]
+    try:
+        item = inventory[itemid]
+    except KeyError:
+        item = None
     if item is not None:
         if operation == "add":
             item[itemid].add(amount)
@@ -59,16 +69,32 @@ def mod_inventory(inventory: dict, operation: str, itemid: str, amount: int):
     return inventory
 
 
+def update_db_user(user: Wallet, id):
+    table = database.create_user_table(user.get_gid())
+    try:
+        userdb = db.session.query(table).filter(table.id == id).one()
+        print(str(id) + " refreshed into DB USER.")
+        inv = {}
+        if user.get_inventory() != '' or None:
+            inv = pickle.dumps(user.get_inventory())
+        userdb.inventory = inv
+        userdb.balance = user.get_money()
+        db.session.commit()
+    except:
+        traceback.print_exc()
+        print("ERROR while loading a user (most likely not registered in DB or User already loaded)")
+
+
 def load_user(id, gid):
     table = database.create_user_table(gid)
     try:
         user = db.session.query(table).filter(table.id == id).one()
         print("queried")
         inv = {}
-        import json
+        import pickle
         if user.inventory != '' or None:
-            inv = json.loads(base64.decodestring(user.inventory))
-        Wallet.users[id] = Wallet(user.balance, inv)
+            inv = pickle.loads(user.inventory)
+        Wallet.users[id] = Wallet(user.balance, inv, gid)
     except:
         traceback.print_exc()
         print("ERROR while loading a user (most likely not registered in DB or User already loaded)")

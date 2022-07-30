@@ -14,21 +14,21 @@ class Balance(commands.Cog):
         # table = database.create_user_table(ctx.message.author.guild.id)
         if user is not None:
             economymanager.check_if_loaded(user.id, ctx.guild.id)
-            await ctx.send("balance: " + str(Wallet.users.get(user.id).get_money()))
+            await ctx.send("balance: " + str(Wallet.users.get(user.id).get_money_F()))
         else:
             senderid = ctx.message.author.id
             economymanager.check_if_loaded(senderid, ctx.guild.id)
-            await ctx.send("balance: " + str(Wallet.users.get(senderid).get_money()))
+            await ctx.send("balance: " + str(Wallet.users.get(senderid).get_money_F()))
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def addbal(self, ctx, user: discord.Member = None, amount: int = 1000):
         if user is not None:
             economymanager.check_if_loaded(user.id, ctx.guild.id)
-            oldbal = Wallet.users.get(user.id).get_money(formatted=False)
+            oldbal = Wallet.users.get(user.id).get_money()
             Wallet.users.get(user.id).add(amount)
             await ctx.send("balance of " + str(user) + " " + str(oldbal) + " -> " +
-                           str(Wallet.users.get(user.id).get_money(formatted=False)))
+                           str(Wallet.users.get(user.id).get_money()))
         else:
             await ctx.send("Please specify a user!")
 
@@ -37,10 +37,10 @@ class Balance(commands.Cog):
     async def removebal(self, ctx, user: discord.Member = None, amount: int = 1000):
         if user is not None:
             economymanager.check_if_loaded(user.id, ctx.guild.id)
-            oldbal = Wallet.users.get(user.id).get_money(formatted=False)
+            oldbal = Wallet.users.get(user.id).get_money()
             Wallet.users.get(user.id).remove(amount)
             await ctx.send("balance of " + str(user) + " " + str(oldbal) + " -> " +
-                           str(Wallet.users.get(user.id).get_money(formatted=False)))
+                           str(Wallet.users.get(user.id).get_money()))
         else:
             await ctx.send("Please specify a user!")
 
@@ -49,14 +49,14 @@ class Balance(commands.Cog):
     async def operationbal(self, ctx, user: discord.Member = None, amount: int = 1000, operation: str = ""):
         if user is not None:
             economymanager.check_if_loaded(user.id, ctx.guild.id)
-            oldbal = Wallet.users.get(user.id).get_money(formatted=False)
+            oldbal = Wallet.users.get(user.id).get_money()
             if Wallet.operators.get(operation) is not None:
                 Wallet.users.get(user.id).operate(amount, operation)
             else:
                 await ctx.send("Invalid operator!! please use [+, -, /, *, **]")
                 return
             await ctx.send(str("balance of " + str(user) + " " + str(oldbal) + " -> " +
-                           str(Wallet.users.get(user.id).get_money(formatted=False))))
+                           str(Wallet.users.get(user.id).get_money())))
         else:
             await ctx.send("Please specify a user!")
 

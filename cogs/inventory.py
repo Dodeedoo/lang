@@ -13,14 +13,16 @@ class Inventory(commands.Cog):
             economymanager.check_if_loaded(user.id, ctx.guild.id)
             msg = "inventory of " + user.display_name
             for item in Wallet.users.get(user.id).get_inventory():
-                msg = msg + "\n" + item.get_emoji() + " " + item.get_name() + " x" + item.get_amount
+                item = Wallet.users.get(user.id).get_inventory()[item]
+                msg = msg + "\n" + str(item.get_emoji()) + " " + str(item.get_name()) + " x" + str(item.get_amount())
 
             await ctx.send(msg)
         else:
             economymanager.check_if_loaded(ctx.message.author.id, ctx.guild.id)
             msg = "inventory of " + ctx.message.author.display_name
             for item in Wallet.users.get(ctx.message.author.id).get_inventory():
-                msg = msg + "\n" + item.get_emoji() + " " + item.get_name() + " x" + item.get_amount
+                item = Wallet.users.get(ctx.message.author.id).get_inventory()[item]
+                msg = msg + "\n" + str(item.get_emoji()) + " " + str(item.get_name()) + " x" + str(item.get_amount())
 
             await ctx.send(msg)
 
